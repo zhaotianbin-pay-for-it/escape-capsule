@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QoderWake 学习指南 · 费曼教学法</title>
+<style>
+  :root {
+    --bg: #090A0B;
+    --bg-card: #111214;
+    --bg-elevated: #191B1E;
+    --border: #2A2D31;
+    --border-subtle: #1E2124;
+    --text: #E8E9EB;
+    --text-secondary: #9BA1A8;
+    --text-muted: #6B7280;
+    --accent: #2ADB5C;
+    --accent-dim: rgba(42, 219, 92, 0.12);
+    --accent-mid: rgba(42, 219, 92, 0.25);
+    --purple: #8B5CF6;
+    --purple-dim: rgba(139, 92, 246, 0.12);
+    --orange: #F59E0B;
+    --orange-dim: rgba(245, 158, 11, 0.12);
+    --red: #EF4444;
+    --red-dim: rgba(239, 68, 68, 0.12);
+    --blue: #3B82F6;
+    --blue-dim: rgba(59, 130, 246, 0.12);
+    --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', 'Fira Code', monospace;
+    --max-w: 860px;
+    --gap: 2rem;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 16px;
+  }
+
+  /* ── Header ── */
+  .site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(9, 10, 11, 0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.75rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .site-header .logo { height: 28px; opacity: 0.9; }
+  .site-header nav { display: flex; gap: 1.5rem; }
+  .site-header nav a {
+    color: var(--text-muted); text-decoration: none;
+    font-size: 0.8rem; letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .site-header nav a:hover { color: var(--text); }
+
+  /* ── Hero ── */
+  .hero {
+    max-width: var(--max-w); margin: 0 auto;
+    padding: 5rem 2rem 3rem;
+    text-align: center;
+  }
+  .hero .badge {
+    display: inline-block;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0.35rem 1rem; border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700; line-height: 1.2;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero .subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem; max-width: 600px;
+    margin: 0 auto 2rem; line-height: 1.7;
+  }
+  .hero .meta {
+    display: flex; gap: 2rem; justify-content: center;
+    color: var(--text-muted); font-size: 0.8rem;
+  }
+
+  /* ── Main content ── */
+  .content {
+    max-width: var(--max-w); margin: 0 auto;
+    padding: 0 2rem 4rem;
+  }
+
+  /* ── Section ── */
+  .section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 5rem;
+  }
+  .section-number {
+    color: var(--accent);
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .section h2 {
+    font-size: 1.6rem; font-weight: 700;
+    letter-spacing: -0.015em;
+    margin-bottom: 0.75rem; line-height: 1.3;
+  }
+  .section h3 {
+    font-size: 1.15rem; font-weight: 600;
+    margin: 2rem 0 0.75rem; line-height: 1.4;
+  }
+  .section p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+  .section p strong { color: var(--text); font-weight: 600; }
+
+  /* ── Feynman callout ── */
+  .feynman {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .feynman .label {
+    color: var(--accent);
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .feynman p { color: var(--text); margin-bottom: 0.5rem; }
+  .feynman p:last-child { margin-bottom: 0; }
+
+  /* ── Analogy box ── */
+  .analogy {
+    background: var(--purple-dim);
+    border: 1px solid rgba(139, 92, 246, 0.2);
+    border-radius: 6px;
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .analogy .label {
+    color: var(--purple);
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .analogy p { color: var(--text); }
+
+  /* ── Table ── */
+  table {
+    width: 100%; border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.88rem;
+  }
+  th {
+    background: var(--bg-elevated);
+    color: var(--text);
+    font-weight: 600; text-align: left;
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.8rem;
+    letter-spacing: 0.02em;
+  }
+  td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    vertical-align: top;
+  }
+  tr:hover td { background: rgba(255,255,255,0.015); }
+  td strong { color: var(--text); font-weight: 600; }
+
+  /* ── Architecture diagram ── */
+  .arch-diagram {
+    display: grid;
+    gap: 1px;
+    background: var(--border-subtle);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 1.5rem 0;
+  }
+  .arch-layer {
+    background: var(--bg-card);
+    padding: 1.25rem 1.5rem;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  .arch-layer .tag {
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 0.3rem 0;
+    color: var(--accent);
+  }
+  .arch-layer.decision .tag { color: var(--orange); }
+  .arch-layer.reasoning .tag { color: var(--purple); }
+  .arch-layer.execution .tag { color: var(--accent); }
+  .arch-layer.state .tag { color: var(--blue); }
+  .arch-layer .detail h4 {
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--text); margin-bottom: 0.25rem;
+  }
+  .arch-layer .detail p {
+    font-size: 0.85rem; margin-bottom: 0;
+    color: var(--text-muted);
+  }
+
+  /* ── Flow diagram ── */
+  .flow {
+    display: flex; align-items: center;
+    gap: 0; margin: 1.5rem 0;
+    flex-wrap: wrap; justify-content: center;
+  }
+  .flow-step {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.65rem 1rem;
+    font-size: 0.82rem;
+    color: var(--text);
+    text-align: center;
+    white-space: nowrap;
+  }
+  .flow-arrow {
+    color: var(--accent);
+    font-size: 1.1rem;
+    padding: 0 0.5rem;
+    flex-shrink: 0;
+  }
+
+  /* ── Code block ── */
+  .code-block {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--text);
+    overflow-x: auto;
+    margin: 1.25rem 0;
+    line-height: 1.6;
+  }
+  .code-block .comment { color: var(--text-muted); }
+  .code-block .cmd { color: var(--accent); }
+  .code-block .flag { color: var(--orange); }
+
+  /* ── Grid cards ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: var(--accent); }
+  .card .card-title {
+    font-size: 0.9rem; font-weight: 600;
+    color: var(--text); margin-bottom: 0.5rem;
+  }
+  .card .card-desc {
+    font-size: 0.82rem;
+    color: var(--text-muted); line-height: 1.6;
+  }
+  .card .card-icon {
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.75rem;
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+  }
+  .card .card-icon.green { color: var(--accent); background: var(--accent-dim); }
+  .card .card-icon.purple { color: var(--purple); background: var(--purple-dim); }
+  .card .card-icon.orange { color: var(--orange); background: var(--orange-dim); }
+  .card .card-icon.blue { color: var(--blue); background: var(--blue-dim); }
+
+  /* ── Timeline ── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1.5rem 0;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px; top: 4px; bottom: 4px;
+    width: 1px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem; top: 6px;
+    width: 11px; height: 11px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+  }
+  .timeline-item .time {
+    font-size: 0.75rem; font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.25rem;
+  }
+  .timeline-item .desc {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* ── Divider ── */
+  .divider {
+    height: 1px;
+    background: var(--border-subtle);
+    margin: 3rem 0;
+  }
+
+  /* ── Key point ── */
+  .keypoint {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  .keypoint h4 {
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--text); margin-bottom: 0.75rem;
+  }
+  .keypoint ul {
+    list-style: none; padding: 0;
+  }
+  .keypoint li {
+    position: relative;
+    padding-left: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+  }
+  .keypoint li::before {
+    content: '';
+    position: absolute; left: 0; top: 0.6em;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  /* ── Waker layers diagram ── */
+  .waker-layers {
+    display: flex; flex-direction: column;
+    gap: 0.5rem;
+    margin: 1.5rem 0;
+  }
+  .waker-layer {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.85rem 1.25rem;
+    display: flex; align-items: center;
+    gap: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .waker-layer:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+  .waker-layer .num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--accent-dim);
+    color: var(--accent);
+    font-size: 0.75rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .waker-layer .info .name {
+    font-size: 0.9rem; font-weight: 600;
+    color: var(--text);
+  }
+  .waker-layer .info .desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    border-top: 1px solid var(--border-subtle);
+    color: var(--text-muted);
+    font-size: 0.75rem;
+  }
+  .site-footer a { color: var(--accent); text-decoration: none; }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .hero { padding: 3rem 1.5rem 2rem; }
+    .content { padding: 0 1.5rem 3rem; }
+    .site-header nav { display: none; }
+    .arch-layer { grid-template-columns: 1fr; gap: 0.25rem; }
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+
+  /* ── Print ── */
+  @media print {
+    :root { --bg: #fff; --text: #111; --text-secondary: #333; --bg-card: #f9f9f9; --border: #ddd; }
+    body { background: #fff; }
+    .site-header, .site-footer { display: none; }
+  }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ═══ Header ═══ -->
+<header class="site-header">
+  <img class="logo" src="assets/qoderwake-brand/logo.svg" alt="QoderWake">
+  <nav>
+    <a href="#concept">概念</a>
+    <a href="#waker">数字员工</a>
+    <a href="#architecture">架构</a>
+    <a href="#evolution">进化</a>
+    <a href="#practice">实战</a>
+    <a href="#quickstart">上手</a>
+  </nav>
+</header>
+
+<!-- ═══ Hero ═══ -->
+<div class="hero">
+  <div class="badge">费曼学习法 · 技术分享</div>
+  <h1>用<span>最简单的话</span>讲清楚<br>QoderWake 数字员工</h1>
+  <p class="subtitle">
+    本文使用费曼教学法，从直觉类比出发，逐步深入 QoderWake 的核心概念、技术架构和实战应用，适合技术团队内部分享与自学。
+  </p>
+  <div class="meta">
+    <span>2026-06-02</span>
+    <span>阅读约 15 分钟</span>
+    <span>适合投屏分享</span>
+  </div>
+</div>
+
+<!-- ═══ Content ═══ -->
+<div class="content">
+
+  <!-- ── Section 1: 费曼第一步 ── -->
+  <div class="section" id="concept">
+    <div class="section-number">Step 01 · 用最简单的话解释</div>
+    <h2>想象你开了一家公司</h2>
+
+    <p>你每天要处理代码审查、Bug 修复、Issue 分类、告警分析……这些事情每一件都需要人去做，但你只有一个人。你不可能 7&times;24 小时不睡觉。</p>
+
+    <div class="feynman">
+      <div class="label">费曼第一步 · 简单解释</div>
+      <p><strong>QoderWake 就是帮你「招」一批不会累的数字员工。</strong>它们住在你的电脑上，7&times;24 小时在线。你可以跟它们聊天派活，也可以设好规则让它们自动干活——就像管理真人团队一样。</p>
+    </div>
+
+    <p>更具体地说：QoderWake 是 Qoder 推出的<strong>数字员工平台</strong>。你在自己的机器上（或云端）安装它，然后创建多个「Waker」（数字员工），每个员工有自己的<strong>名字、角色、技能、记忆和权限</strong>。它们可以独立工作，也可以协同配合。</p>
+
+    <div class="analogy">
+      <div class="label">类比 · 一句话理解</div>
+      <p>把 QoderWake 想象成一个<strong>「AI 版的人才市场 + 办公系统」</strong>。你从市场里选角色（后端工程师、测试工程师……），给它们分配工位（项目/代码仓库），告诉它们能做什么不能做什么（权限），然后它们就开始上班了。</p>
+    </div>
+
+    <p>它的 Slogan 是：<strong>「Always awake, always working.」</strong>——全天在线，永不下班。</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── Section 2: 核心概念 Waker ── -->
+  <div class="section" id="waker">
+    <div class="section-number">Step 02 · 深入核心概念</div>
+    <h2>什么是 Waker（数字员工）？</h2>
+
+    <p>Waker 是 QoderWake 的核心概念。每一个 Waker 就是一个独立的数字员工，有自己的<strong>五层架构</strong>——就像真人员工有身份证、技能证书、工作手册、岗位职责和行为准则一样。</p>
+
+    <div class="waker-layers">
+      <div class="waker-layer">
+        <div class="num">1</div>
+        <div class="info">
+          <div class="name">身份 Identity</div>
+          <div class="desc">定义员工是谁——名字、角色定位、红线策略。纯文本管理，可 Git 版本控制。</div>
+        </div>
+      </div>
+      <div class="waker-layer">
+        <div class="num">2</div>
+        <div class="info">
+          <div class="name">记忆 Memory</div>
+          <div class="desc">保留长期上下文——对项目、对用户的认知积累。跨环境重启存活，本地存储。</div>
+        </div>
+      </div>
+      <div class="waker-layer">
+        <div class="num">3</div>
+        <div class="info">
+          <div class="name">技能 Skills</div>
+          <div class="desc">决定能调用哪些工具、执行什么操作。可从 Skills Marketplace 安装或自定义上传。</div>
+        </div>
+      </div>
+      <div class="waker-layer">
+        <div class="num">4</div>
+        <div class="info">
+          <div class="name">分工 Division of Labor</div>
+          <div class="desc">处理复杂任务的分解与协作，让多个员工可以协同完成大型工作。</div>
+        </div>
+      </div>
+      <div class="waker-layer">
+        <div class="num">5</div>
+        <div class="info">
+          <div class="name">权限红线 Permission Red Lines</div>
+          <div class="desc">定义哪些操作需要人工审批——核心分支、生产数据、高危命令等边界。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feynman">
+      <div class="label">费曼检验 · 用类比检验理解</div>
+      <p>想象你要招一个后端工程师。你会给他：(1) 一个工牌（身份）；(2) 一份项目文档让他熟悉（记忆）；(3) 开 Jira、Git、CI/CD 的账号（技能）；(4) 告诉他负责哪些模块（分工）；(5) 强调「不能直接 push 到 main」（权限红线）。<br><br>QoderWake 对每个 Waker 做的事情，和你入职一个新员工的流程<strong>一模一样</strong>。</p>
+    </div>
+
+    <h3>员工与工作空间解耦</h3>
+    <p>QoderWake 做了一个重要的架构决策：<strong>员工和工作站是分离的</strong>。</p>
+
+    <table>
+      <thead><tr><th>概念</th><th>包含什么</th><th>特点</th></tr></thead>
+      <tbody>
+        <tr><td><strong>员工 Waker</strong></td><td>身份、记忆、技能、权限</td><td>可跨设备迁移，跟随你的账号</td></tr>
+        <tr><td><strong>工作站</strong></td><td>运行时环境</td><td>可以是本地 PC，也可以是云沙箱</td></tr>
+      </tbody>
+    </table>
+
+    <p>这意味着你的数字员工的「人格」和「能力」是绑定在员工身上的，而它在哪里运行（你的 Mac mini 还是云服务器）只是一个执行环境的区别。<strong>数据控制</strong>方面，用户可以自主决定代码和记忆存储在云端还是本地。</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── Section 3: 预置角色 ── -->
+  <div class="section" id="roles">
+    <div class="section-number">Step 03 · 了解可用的角色</div>
+    <h2>预置角色：开箱即用的岗位模板</h2>
+
+    <p>QoderWake 内置了多种角色模板，每个模板自带<strong>人设、工作流、核心技能集</strong>。你可以直接选一个角色创建员工，也可以在此基础上自定义调整。</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon green">后端工程师</div>
+        <div class="card-title">Backend Engineer</div>
+        <div class="card-desc">API 开发、数据建模、服务集成、性能优化、线上稳定性。自动分析 Bug/Issue 并提 PR。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon purple">前端工程师</div>
+        <div class="card-title">Frontend Engineer</div>
+        <div class="card-desc">界面设计与实现、组件架构、响应式适配、无障碍优化和性能调优。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon blue">测试工程师</div>
+        <div class="card-title">QA Engineer</div>
+        <div class="card-desc">测试计划文档、端到端测试、缺陷复现、基于证据的报告。不修复问题，专注质量保障。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon orange">产品经理</div>
+        <div class="card-title">Product Manager</div>
+        <div class="card-desc">需求全生命周期管理、PRD 生成、用户反馈分析、竞品研究、发布沟通。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon green">数据分析师</div>
+        <div class="card-title">Data Analyst</div>
+        <div class="card-desc">指标口径、数据收集与诊断、市场背景分析、证据化建议。</div>
+      </div>
+      <div class="card">
+        <div class="card-icon purple">内容运营</div>
+        <div class="card-title">Content Operator</div>
+        <div class="card-desc">账号定位、热点洞察、内容创作、审批发布、数据复盘、品牌合规。</div>
+      </div>
+    </div>
+
+    <p>如果以上角色都不满足需求，还可以选择<strong>「自定义角色」</strong>——完全由你定义员工的人设、专长和工作风格，并挂载任意技能和 MCP 连接器。</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── Section 4: 技术架构 ── -->
+  <div class="section" id="architecture">
+    <div class="section-number">Step 04 · 深入技术原理</div>
+    <h2>Harness Engineering：数字员工的「大脑架构」</h2>
+
+    <p>了解了 Waker 是什么之后，下一个问题是：<strong>它是怎么工作的？</strong>QoderWake 扩展了行业标准的 Harness 工程体系，设计了四层架构来保证数字员工的可靠性。</p>
+
+    <div class="analogy">
+      <div class="label">类比 · 像理解一个餐厅那样理解架构</div>
+      <p>想象一个餐厅的运作：(1) <strong>经理</strong>决定今天做什么菜、安排服务员分工（决策层）；(2) <strong>厨师</strong>根据菜单理解客人需求、设计菜品（推理层）；(3) <strong>厨房</strong>实际烹饪菜品，做好后由品控员检查（执行层）；(4) <strong>点菜系统</strong>记录每一笔订单，即使断电重启也不会丢单（状态层）。</p>
+    </div>
+
+    <div class="arch-diagram">
+      <div class="arch-layer decision">
+        <div class="tag">决策层</div>
+        <div class="detail">
+          <h4>Orchestrator · 确定性流程编排</h4>
+          <p>确保长时间运行任务的可靠性。就像一个项目经理，负责把大任务拆解成小步骤、按顺序推进、遇到问题时决定下一步。</p>
+        </div>
+      </div>
+      <div class="arch-layer reasoning">
+        <div class="tag">推理层</div>
+        <div class="detail">
+          <h4>LLM Model · 意图理解与推理</h4>
+          <p>实现「脑-手-会话」解耦。LLM 负责理解你说的话、推理该怎么做，但不直接执行操作——它只负责「想」。</p>
+        </div>
+      </div>
+      <div class="arch-layer execution">
+        <div class="tag">执行层</div>
+        <div class="detail">
+          <h4>Executor · 任务生成与即时验证</h4>
+          <p>独立验证器检查结果。执行产生结果后，由独立的验证器审查——如果验证失败，触发 REWORK 并记录失败原因作为未来知识。</p>
+        </div>
+      </div>
+      <div class="arch-layer state">
+        <div class="tag">状态层</div>
+        <div class="detail">
+          <h4>Session · 所有组件的唯一状态源</h4>
+          <p>崩溃后可完全重建；幂等恢复序列。所有组件共享同一个状态源，不会因为「各记各的」导致数据不一致。</p>
+        </div>
+      </div>
+    </div>
+
+    <h3>双反馈循环：做完了还要检查</h3>
+    <p>这是 QoderWake 架构中最精妙的设计之一。执行层不仅仅是「做完就完」——它有一个<strong>双重验证机制</strong>：</p>
+
+    <div class="flow">
+      <div class="flow-step">Executor 执行</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">产生结果</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">Verifier 验证</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step" style="border-color: var(--accent); color: var(--accent);">通过 &check;</div>
+    </div>
+
+    <p style="text-align:center; color: var(--text-muted); font-size: 0.82rem; margin-top: -0.5rem;">验证失败时，触发 REWORK，失败原因记录为知识 &rarr; 下次避免同类错误</p>
+
+    <div class="feynman">
+      <div class="label">费曼检验 · 理解双反馈</div>
+      <p>就像考试做完后自己检查一遍。如果发现错误，不仅改答案，还要<strong>记住「这类题我容易错在哪里」</strong>——下次遇到同类题就自动多检查一次。这就是 QoderWake 的「经验转化为能力」机制。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── Section 5: 进化与治理 ── -->
+  <div class="section" id="evolution">
+    <div class="section-number">Step 05 · 理解进化机制</div>
+    <h2>越用越聪明，而不是越用越乱</h2>
+
+    <p>很多人对 AI 工具的一个担忧是：用久了会不会变得「更乱」而不是「更好」？QoderWake 专门设计了<strong>进化与治理机制</strong>来解决这个问题。</p>
+
+    <div class="analogy">
+      <div class="label">类比 · 像培养一个实习生</div>
+      <p>Day 1 的实习生什么都不懂，需要你手把手教。但你教他的每一次，他都在记笔记、总结经验。到 Day 90，他已经成为熟悉你工作方式的资深员工——知道你喜欢什么代码风格、哪些模块要特别小心、哪些 PR 可以直接过。<br><br>QoderWake 的数字员工就是这样「成长」的。</p>
+    </div>
+
+    <h3>三个关键机制</h3>
+
+    <div class="keypoint">
+      <h4>1. 统一信号 · 所有经验变成结构化知识</h4>
+      <ul>
+        <li>对话、工具调用、检索、验证、纠正——全部转化为<strong>结构化学习信号</strong></li>
+        <li>不是简单的聊天记录，而是可以被系统理解和利用的知识</li>
+      </ul>
+    </div>
+
+    <div class="keypoint">
+      <h4>2. 轨迹归因 · 经验变成正确的东西</h4>
+      <ul>
+        <li>系统分析完整的任务轨迹（不只是结果），决定经验应该沉淀为什么</li>
+        <li>可能变成：记忆（长期认知）、技能（可复用操作）、策略（决策规则）、验证器（检查规则）、工作流（标准流程）</li>
+      </ul>
+    </div>
+
+    <div class="keypoint">
+      <h4>3. 抗腐化治理 · 旧知识不会拖后腿</h4>
+      <ul>
+        <li><strong>降权</strong>：过时的记忆和技能权重自动降低</li>
+        <li><strong>合并</strong>：冲突的技能会被智能合并</li>
+        <li><strong>撤回</strong>：无效的策略会被清理掉</li>
+      </ul>
+    </div>
+
+    <h3>成长时间线</h3>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="time">Day 1</div>
+        <div class="desc">初始基线。员工刚入职，按照角色模板的默认能力工作。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Day 7</div>
+        <div class="desc">开始积累项目记忆。了解你的代码风格、仓库结构、常用工具链。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Day 30</div>
+        <div class="desc">形成稳定的工作模式。能独立完成常见的任务类型，减少人工干预。</div>
+      </div>
+      <div class="timeline-item">
+        <div class="time">Day 90+</div>
+        <div class="desc">专家级适应。深度理解你的编码习惯、项目架构和团队协作模式。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── Section 6: 工作方式 ── -->
+  <div class="section" id="workmode">
+    <div class="section-number">Step 06 · 两种工作方式</div>
+    <h2>对话派活 vs 自动执行</h2>
+
+    <p>数字员工有两种工作模式，适用于不同场景。</p>
+
+    <h3>对话任务 · 实时协作</h3>
+    <p>直接在输入框输入需求，员工开始干活。过程中你可以：</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-title">追问 &amp; 调方向</div>
+        <div class="card-desc">随时插话，员工接着上下文继续工作。</div>
+      </div>
+      <div class="card">
+        <div class="card-title">审批操作</div>
+        <div class="card-desc">要动文件、跑命令时会停下来征求同意，你点「允许」或「拒绝」。</div>
+      </div>
+      <div class="card">
+        <div class="card-title">切换模型</div>
+        <div class="card-desc">对话中途感觉不够聪明或想省成本，顶部下拉可以换模型继续。</div>
+      </div>
+      <div class="card">
+        <div class="card-title">实时观察</div>
+        <div class="card-desc">看思考过程、看产物产出，全程透明。</div>
+      </div>
+    </div>
+
+    <h3>自动任务 · 无人值守</h3>
+    <p>适合「每天跑一次」「监听仓库变化就自动响应」这类场景。支持三种触发方式：</p>
+
+    <table>
+      <thead><tr><th>触发方式</th><th>场景</th><th>示例</th></tr></thead>
+      <tbody>
+        <tr><td><strong>定时</strong></td><td>周期性任务</td><td>每天 9 点生成日报、每周做一次代码审查</td></tr>
+        <tr><td><strong>事件驱动</strong></td><td>响应外部变化</td><td>GitHub Issue 变化时自动分析、PR 提交时自动 Review</td></tr>
+        <tr><td><strong>网络回调</strong></td><td>第三方系统集成</td><td>监控系统告警 → Webhook 触发员工诊断</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── Section 7: 管理维度 ── -->
+  <div class="section" id="management">
+    <div class="section-number">Step 07 · 管理你的数字团队</div>
+    <h2>五个管理维度</h2>
+
+    <p>管理数字员工和管理真人团队有很多相似之处。你需要关注五个维度：</p>
+
+    <table>
+      <thead><tr><th>维度</th><th>你能做什么</th><th>关键特点</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>记忆管理</strong></td>
+          <td>浏览、搜索、编辑员工的长期认知</td>
+          <td>自动沉淀 + 手动写入 + 系统定期整理。本地存储，不上传云端。</td>
+        </tr>
+        <tr>
+          <td><strong>技能</strong></td>
+          <td>安装、上传、开关技能包</td>
+          <td>从 Skills Marketplace 安装或自定义上传。内置技能不可卸载。</td>
+        </tr>
+        <tr>
+          <td><strong>连接器</strong></td>
+          <td>对接外部工具/服务</td>
+          <td>支持 GitHub、Jira、GitLab 等主流开发工具。</td>
+        </tr>
+        <tr>
+          <td><strong>项目</strong></td>
+          <td>绑定本地目录或 Git 仓库</td>
+          <td>一个项目可包含多个源。项目记忆与员工个人记忆分开。</td>
+        </tr>
+        <tr>
+          <td><strong>权限</strong></td>
+          <td>工具防护 + 文件防护 + 内置工具策略</td>
+          <td>检测命令注入、资源滥用、权限提升等。高危操作弹审批卡片。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="feynman">
+      <div class="label">费曼检验 · 权限红线像什么？</div>
+      <p>想象你给了新员工公司服务器的 SSH 权限，但你<strong>不希望他能 rm -rf /</strong>。QoderWake 的权限系统就是这个角色——它会检测命令注入、资源滥用、远程代码执行、反弹 Shell、敏感文件访问、权限提升等危险操作，命中高危规则时会<strong>暂停并弹出审批卡片</strong>让你确认。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── Section 8: 实战案例 ── -->
+  <div class="section" id="practice">
+    <div class="section-number">Step 08 · 实战案例</div>
+    <h2>场景：自动修复 Bug</h2>
+
+    <p>让我们通过一个具体场景，看看 QoderWake 是如何工作的。</p>
+
+    <h3>方法 A · 手动发起对话</h3>
+    <div class="flow">
+      <div class="flow-step">选择「后端工程师」Waker</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">输入报错信息</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">员工分析根因</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">确认修复方案</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step" style="border-color: var(--accent); color: var(--accent);">提 PR</div>
+    </div>
+
+    <h3>方法 B · 设自动任务处理</h3>
+    <div class="flow">
+      <div class="flow-step">新建触发任务</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">选「事件」触发</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">监听 GitHub Issue</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">新 Bug 出现</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step" style="border-color: var(--accent); color: var(--accent);">自动分析 + 提 PR</div>
+    </div>
+
+    <div class="feynman">
+      <div class="label">关键洞察 · 从「救火」到「防火」</div>
+      <p>传统方式是 Bug 出现 &rarr; 你手动排查 &rarr; 修复 &rarr; 提 PR。用 QoderWake 后，Bug 出现 &rarr; <strong>员工自动分析根因并准备好修复 PR</strong> &rarr; 你早上起来只需要 review 和 merge。这是从「被动救火」到「主动防火」的转变。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── Section 9: 快速上手 ── -->
+  <div class="section" id="quickstart">
+    <div class="section-number">Step 09 · 快速上手</div>
+    <h2>5 分钟跑起来</h2>
+
+    <h3>环境要求</h3>
+    <table>
+      <thead><tr><th>平台</th><th>要求</th><th>状态</th></tr></thead>
+      <tbody>
+        <tr><td><strong>macOS</strong></td><td>13.0 及以上</td><td style="color: var(--accent);">可用</td></tr>
+        <tr><td><strong>Linux</strong></td><td>Ubuntu 22.04 LTS+，需启用 GUI 桌面</td><td style="color: var(--accent);">可用</td></tr>
+        <tr><td><strong>Windows</strong></td><td>敬请期待</td><td style="color: var(--text-muted);">待发布</td></tr>
+      </tbody>
+    </table>
+
+    <h3>安装命令</h3>
+    <div class="code-block">
+      <span class="comment"># macOS 和 Linux 通用安装命令</span><br>
+      <span class="cmd">curl</span> <span class="flag">-fsSL</span> https://qoder-ide.oss-ap-southeast-1.aliyuncs.com/qoderwake/install.sh <span class="flag">|</span> <span class="cmd">bash</span><br><br>
+      <span class="comment"># 安装完成后，打开 Web Console</span><br>
+      <span class="comment"># 浏览器访问: http://127.0.0.1:19820</span>
+    </div>
+
+    <h3>安装脚本会自动完成</h3>
+    <div class="keypoint">
+      <h4>自动安装流程</h4>
+      <ul>
+        <li>检测 CPU 架构并下载对应安装包</li>
+        <li>安装主程序和资源文件</li>
+        <li>创建命令入口并加入 PATH</li>
+        <li>启动浏览器登录</li>
+        <li>登录后启动本地常驻服务</li>
+        <li>自动打开 Web Console</li>
+      </ul>
+    </div>
+
+    <h3>创建第一个数字员工</h3>
+    <div class="flow">
+      <div class="flow-step">打开控制台</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">点击「创建 Waker」</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">选择角色模板</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step">填写名字头像</div>
+      <div class="flow-arrow">&rarr;</div>
+      <div class="flow-step" style="border-color: var(--accent); color: var(--accent);">开始工作</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ── Section 10: 总结 ── -->
+  <div class="section" id="summary">
+    <div class="section-number">Step 10 · 总结回顾</div>
+    <h2>费曼教学法回顾：你能讲清楚了吗？</h2>
+
+    <p>费曼学习法的最后一步是检验：<strong>你现在能不能用最简单的话，给别人讲清楚 QoderWake 是什么？</strong></p>
+
+    <div class="keypoint">
+      <h4>核心要点清单</h4>
+      <ul>
+        <li><strong>QoderWake 是什么</strong>：一个在你本机上运行的数字员工平台，7&times;24 小时在线</li>
+        <li><strong>核心概念 Waker</strong>：每个数字员工有五层架构——身份、记忆、技能、分工、权限红线</li>
+        <li><strong>预置角色</strong>：后端/前端/测试/产品/数据/运营 + 自定义角色</li>
+        <li><strong>技术架构</strong>：四层 Harness Engineering（决策/推理/执行/状态）+ 双反馈循环</li>
+        <li><strong>进化机制</strong>：统一信号 + 轨迹归因 + 抗腐化治理，越用越聪明</li>
+        <li><strong>工作方式</strong>：对话任务（实时协作）+ 自动任务（定时/事件/回调触发）</li>
+        <li><strong>管理维度</strong>：记忆、技能、连接器、项目、权限</li>
+      </ul>
+    </div>
+
+    <div class="feynman">
+      <div class="label">费曼终极检验 · 电梯演讲版</div>
+      <p>「QoderWake 让你在自己电脑上组建一支 AI 员工团队。每个员工有自己的身份、记忆和技能，能跟你聊天也能自动干活。它们会越用越聪明，而且有权限系统防止它们乱来。装上就能用，免费。」</p>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">如果你能用这段话给朋友解释清楚 QoderWake，恭喜你——你已经真正理解了。</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ Footer ═══ -->
+<footer class="site-footer">
+  <p>基于费曼教学法编写的 QoderWake 学习分享文档 &middot; 内容来源：<a href="https://docs.qoder.com/zh/qoderwake/quick-start" target="_blank">Qoder 官方文档</a></p>
+  <p style="margin-top: 0.5rem;">Created by QoderWake Digital Worker</p>
+</footer>
+
+</body>
+</html>
